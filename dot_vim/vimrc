@@ -1,0 +1,86 @@
+" General Settings
+syntax enable
+
+" move viminfo file inside .vim
+" https://stackoverflow.com/questions/6286866/how-to-tell-vim-to-store-the-viminfo-file-somewhere-else
+set viminfo+=n~/.vim/viminfo
+set shortmess=I " Read :help shortmess for everything else.
+
+silent! source ~/.vimrc.local
+
+filetype indent on " filetype-specific indentation config
+filetype plugin on
+
+" vim-plug
+call plug#begin()
+" Make sure you use single quotes
+Plug 'w0rp/ale'
+Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-commentary'
+Plug 'rodjek/vim-puppet'
+Plug 'majutsushi/tagbar'
+Plug 'morhetz/gruvbox'
+Plug 'vim-airline/vim-airline'
+Plug 'bserem/vim-greek-spell'
+Plug 'chr4/nginx.vim'
+" Initialize plugin system
+call plug#end()
+
+try
+    let g:gruvbox_termcolors=16
+    colorscheme gruvbox
+    set background=dark
+catch /^Vim\%((\a\+)\)\=:E185/
+    colorscheme evening
+endtry
+
+" netrw config
+"let g:netrw_banner = 0
+"let g:netrw_liststyle = 3
+"let g:netrw_browse_split = 2
+"let g:netrw_winsize = 25
+
+"set cursorline    " highlight cursor line
+set showtabline=2 " always show the tabbar on top
+set laststatus=2  " always show the statusbar
+
+set showmatch     " show the matching part for closing chars
+set incsearch     " search as you type
+set hlsearch      " highligh search matches
+
+"set number        " don't want numbers by default
+set autoindent     " indent to same level
+set expandtab      " automatically expand tabs to spaces
+set tabstop=4      " set tabs to have 4 spaces
+set softtabstop=4  " set tabs to have 4 spaces
+
+let g:ale_sign_column_always=1
+
+"nmap <F8> :TagbarToggle<CR>
+
+"let g:tagbar_type_puppet = {
+"  \ 'ctagstype': 'puppet',
+"  \ 'kinds': [
+"    \'c:class',
+"    \'s:site',
+"    \'n:node',  
+"    \'d:definition',
+"    \'r:resource',
+"    \'f:default'
+"  \]
+"\}
+
+" CtrlP settings
+"let g:ctrlp_match_window = 'bottom,order:ttb' " orde matching files top-to-bottom
+"let g:ctrlp_switch_buffer = 0 " always open files in  new buffers
+"let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""' " use ag binary
+
+" Enable spell checking for markdown files
+"au BufRead *.md setlocal spell
+"au BufRead *.md setlocal spell spelllang=el,en
+"au BufRead *.md setlocal expandtab shiftwidth=4
+"au BufRead *.markdown setlocal spell
+"au BufRead *.markdown setlocal spell spelllang=el,en
+"au BufRead,BufNewFile *.md setlocal textwidth=80

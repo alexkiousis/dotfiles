@@ -1,0 +1,40 @@
+[ -z "$PS1" ] && return
+#Always run inside a tmux sessions
+[ ! "$TMUX" ] && ([ "$SSH_CONNECTION" ] && tmux -2 attach || tmux -2 new ) && exit 0
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+HISTTIMEFORMAT="%F %T "
+HISTCONTROL=ignorenone
+HISTSIZE=
+HISTFILESIZE=20000
+
+shopt -s autocd       # autocd to directories when path is entered
+shopt -s checkjobs    # notify if there are any jobs before exiting
+shopt -s checkwinsize # recheck the windowsize after every command finishes executing
+shopt -s cmdhist      # save multiline commands in one line - already off
+shopt -s histappend
+
+alias l='ls -lsFha'
+alias ls='ls --color=auto'
+alias ll='ls -Flha'
+alias ip='ip --color'
+
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+EDITOR="vim"
+VISUAL="vim"
+
+rand17() {
+    r=$[$RANDOM%7+1]
+    if [[ "$r" == "$last_term_color" ]]; then
+        r="$(rand17)"
+    else
+       last_term_color="$r"
+       echo "$r"
+    fi
+
+}
+#PS1='\[$(tput setaf $(rand17))\]${debian_chroot:+($debian_chroot)}\[$(tput setaf $(rand17))\]\[$(tput setaf $(rand17))\]\h\[$(tput setaf $(rand17))\]\[$(tput rev)\]:\w\$\[$(tput sgr0)\] '
+PS1='\[$(tput setaf $(rand17))\]${debian_chroot:+($debian_chroot)}\[$(tput setaf $(rand17))\]\[$(tput setaf $(rand17))\]$(hostname -f)\[$(tput setaf $(rand17))\]\[$(tput rev)\]:\w\$\[$(tput sgr0)\] '                                     
