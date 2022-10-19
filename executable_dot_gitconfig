@@ -1,0 +1,19 @@
+[user]
+    email = alex@kiousis.me
+	name = Alexandros Kiousis
+[help]
+	autocorrect = 20
+[identity "personal"]
+	name = Alexandros Kiousis
+	email = alex@kiousis.me
+[identity "grnet"]
+	name = Alexandros Kiousis
+	email = alexk@noc.grnet.gr
+[core]
+	excludesfile = /home/alexk/.gitignore
+[pull]
+	ff = only
+[http]
+	postBuffer = 524288000
+[init]
+	defaultBranch = main
