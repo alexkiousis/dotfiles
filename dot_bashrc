@@ -1,30 +1,34 @@
 [ -z "$PS1" ] && return
-#Always run inside a tmux sessions
-[ ! "$TMUX" ] && ([ "$SSH_CONNECTION" ] && tmux -2 attach || tmux -2 new ) && exit 0
+#[ ! "$TMUX" ] && ([ "$SSH_CONNECTION" ] && tmux -2 attach || tmux -2 new ) && exit 0
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
+# Save epoch timestamp in history file
 HISTTIMEFORMAT="%F %T "
+# Put everything in history
 HISTCONTROL=ignorenone
+# Unlimited commands
 HISTSIZE=
-HISTFILESIZE=20000
+# Unlimited filesize
+HISTFILESIZE=
 
 shopt -s autocd       # autocd to directories when path is entered
 shopt -s checkjobs    # notify if there are any jobs before exiting
 shopt -s checkwinsize # recheck the windowsize after every command finishes executing
 shopt -s cmdhist      # save multiline commands in one line - already off
 shopt -s histappend
+shopt -s cdspell
 
-alias l='ls -lsFha'
 alias ls='ls --color=auto'
-alias ll='ls -Flha'
+alias l='ls -lsFh'
+alias ll='ls -Flsha'
 alias ip='ip --color'
 
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
-EDITOR="vim"
-VISUAL="vim"
+export EDITOR="vim"
+export VISUAL="vim"
 
 rand17() {
     r=$[$RANDOM%7+1]
@@ -34,7 +38,13 @@ rand17() {
        last_term_color="$r"
        echo "$r"
     fi
-
 }
-#PS1='\[$(tput setaf $(rand17))\]${debian_chroot:+($debian_chroot)}\[$(tput setaf $(rand17))\]\[$(tput setaf $(rand17))\]\h\[$(tput setaf $(rand17))\]\[$(tput rev)\]:\w\$\[$(tput sgr0)\] '
-PS1='\[$(tput setaf $(rand17))\]${debian_chroot:+($debian_chroot)}\[$(tput setaf $(rand17))\]\[$(tput setaf $(rand17))\]$(hostname -f)\[$(tput setaf $(rand17))\]\[$(tput rev)\]:\w\$\[$(tput sgr0)\] '                                     
+PS1='\[$(tput setaf $(rand17))\]${debian_chroot:+($debian_chroot)}\[$(tput setaf $(rand17))\]\[$(tput setaf $(rand17))\]$(hostname -f)\[$(tput setaf $(rand17))\]\[$(tput rev)\]:\w\$\[$(tput sgr0)\] '
+source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
+complete -W "$(echo `cat ~/.ssh/known_hosts | cut -f 1 -d ' ' | sed -e s/,.*//g | uniq | grep -v "\["`;)" ssh
+alias k="kubectl"
+complete -F __start_kubectl k
+alias cdr='cd $(git rev-parse --show-toplevel)'
+alias cdw='cd ~/bin/workspace/'
+# remove enter when pasting
+bind 'set enable-bracketed-paste on'
